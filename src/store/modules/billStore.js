@@ -19,10 +19,10 @@ const billStore = createSlice({
 const {setBillList} = billStore.actions
 
 //编写异步
-const getBillList(){
+function getBillList(){
     return async (dispatch)=>{
         //编写异步请求
-        const res = await axios.get('http://localhost:8888')
+        const res = await axios.get('http://localhost:8888/ka')
         //出发同步reducer
         dispatch(setBillList(res.data))
     }
@@ -30,4 +30,6 @@ const getBillList(){
 
 export {getBillList}
 
-export default reducer = billStore.reducer
+const reducer = billStore.reducer
+
+export default reducer
