@@ -1,19 +1,24 @@
 import { NavBar,DatePicker } from 'antd-mobile'
 import { BillOutline } from 'antd-mobile-icons'
+import { useState } from 'react'
 import './index.scss'
+import classNames from 'classnames'
 
 export default function Month() {
+
+    const [dateVisible, setDateVisible] = useState(false)
+
     return (
         <div className="monthlyBill">
             <NavBar className="nav" backIcon={<BillOutline/>}>月度账单</NavBar>
             <div className="content">
                 <div className="header">
                     {/* 时间切换区域 */}
-                    <div className="date">
+                    <div className="date" onClick={()=>setDateVisible(true)}>
                         <span className="text">
                             2026 | 3月账单
                         </span>
-                        <span className="arrow expand"></span>
+                        <span className={classNames('arrow', dateVisible && 'expand')}></span>
                     </div>
 
                     {/* 统计区域 */}
@@ -35,7 +40,8 @@ export default function Month() {
                         className="kaDate"
                         title="记账日期"
                         precision="month"
-                        visible={false}
+                        visible={dateVisible}
+                        onClose={() => setDateVisible(false)}
                         max={new Date()}
                     />
                 </div>
