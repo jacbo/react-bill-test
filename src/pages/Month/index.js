@@ -1,11 +1,22 @@
 import { NavBar,DatePicker } from 'antd-mobile'
 import { BillOutline } from 'antd-mobile-icons'
-import { useState } from 'react'
+import { useState,useMemo } from 'react'
 import './index.scss'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
+import _ from 'lodash'
 
 export default function Month() {
+
+    // 按月分组数据
+    const billList = useSelector(state=>state.bill.billList)
+    const monthGroup = useMemo(()=>{
+    
+        return _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM'))
+    },[billList])
+
+    console.log(monthGroup)
 
     const [dateVisible, setDateVisible] = useState(false)
 

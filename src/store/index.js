@@ -5,7 +5,7 @@ import billReducer from './modules/billStore';
 
 const store = configureStore({
   reducer:{
-    biil: billReducer
+    bill: billReducer
   }
 });
 
