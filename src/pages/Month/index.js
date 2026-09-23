@@ -3,10 +3,13 @@ import { BillOutline } from 'antd-mobile-icons'
 import { useState } from 'react'
 import './index.scss'
 import classNames from 'classnames'
+import dayjs from 'dayjs'
 
 export default function Month() {
 
     const [dateVisible, setDateVisible] = useState(false)
+
+    const [currentDate, setCurrentDate] = useState(()=> new Date())
 
     return (
         <div className="monthlyBill">
@@ -16,7 +19,7 @@ export default function Month() {
                     {/* 时间切换区域 */}
                     <div className="date" onClick={()=>setDateVisible(true)}>
                         <span className="text">
-                            2026 | 3月账单
+                            {dayjs(currentDate).format('YYYY | MM月账单')}
                         </span>
                         <span className={classNames('arrow', dateVisible && 'expand')}></span>
                     </div>
@@ -42,6 +45,9 @@ export default function Month() {
                         precision="month"
                         visible={dateVisible}
                         onClose={() => setDateVisible(false)}
+                        onConfirm={(date) => { 
+                            setCurrentDate(date)
+                        }}
                         max={new Date()}
                     />
                 </div>
