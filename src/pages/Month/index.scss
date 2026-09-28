@@ -10,7 +10,7 @@
     .nav {
         --adm-font-size-10: 16px;
         color: 121826;
-        background-color: blue;
+        background-color: rgba(253, 253, 252,9);
         .adm-nav-bar-arrow { 
             font-size: 20px;
         }
@@ -32,10 +32,12 @@
             height: 135px;
             padding: 20px 20px 0px 18.5px;
             margin-bottom: 10px;
-            background-image: url("../../assets/bg3.png");
+            // background-image: url("../../assets/bg3.png");
+            background-color: #fdde78;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
+            border-radius: 15px;
 
             .date { 
                 display: flex;

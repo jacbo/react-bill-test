@@ -1,11 +1,12 @@
 import { NavBar,DatePicker } from 'antd-mobile'
 import { BillOutline } from 'antd-mobile-icons'
-import { useState,useMemo } from 'react'
+import { useState,useMemo,useEffect } from 'react'
 import './index.scss'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
+import DailyBill from './components/DayBill'
 
 export default function Month() {
 
@@ -16,11 +17,27 @@ export default function Month() {
         return _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM'))
     },[billList])
 
-    console.log(monthGroup)
+    const dateGroup = useMemo(()=>{
+        return _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM-DD'))
+    },[billList])
 
     const [dateVisible, setDateVisible] = useState(false)
 
     const [currentDate, setCurrentDate] = useState(()=> new Date())
+
+    const [monthList, setMonthList] = useState([])
+
+    const monthResult = useMemo(()=>{
+        console.log('monthList', monthList)
+        const pay = monthList.filter(item=>item.type === 'pay').reduce((pre,cur)=>pre+cur.money,0)
+        const income = monthList.filter(item=>item.type === 'income').reduce((pre,cur)=>pre+cur.money,0)
+        return {pay,income,total:pay+income}
+    },[monthList])
+
+    useEffect(()=>{ 
+        const curMonth = dayjs().format('YYYY-MM')
+        setMonthList(monthGroup[curMonth] ?? [])
+    },[monthGroup])
 
     return (
         <div className="monthlyBill">
@@ -38,15 +55,15 @@ export default function Month() {
                     {/* 统计区域 */}
                     <div className="twoLineOverview">
                         <div className="item">
-                            <span className="money">{100}</span>
+                            <span className="money">{monthResult.pay.toFixed(2)}</span>
                             <span className="type">支出</span>
                         </div>
                         <div className="item">
-                            <span className="money">{200}</span>
+                            <span className="money">{monthResult.income.toFixed(2)}</span>
                             <span className="type">收入</span>
                         </div>
                         <div className="item">
-                            <span className="money">{300}</span>
+                            <span className="money">{monthResult.total.toFixed(2)}</span>
                             <span className="type">结余</span>
                         </div>
                     </div>
@@ -58,11 +75,23 @@ export default function Month() {
                         onClose={() => setDateVisible(false)}
                         onConfirm={(date) => { 
                             setCurrentDate(date)
+                            const month = dayjs(date).format('YYYY-MM')
+                            setMonthList(monthGroup[month] ?? [])
                         }}
                         max={new Date()}
                     />
                 </div>
-                
+                {/* 单日列表 */}
+
+                {
+                    monthList?.length > 0 && monthList.map((item, index) => { 
+                        const date = dayjs(item.date).format('YYYY-MM-DD')
+                        const dateTxt = dayjs(item.date).format('M月D日')
+                        return (
+                            <DailyBill key={date} date={dateTxt} billList={dateGroup[date]} />
+                        )
+                    })
+                }
             </div>
         </div>
     )
