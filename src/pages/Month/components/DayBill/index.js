@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
 import './index.scss'
+import { billTypeToName} from '@/constants'
 
 /**
  * 单日账单组件
@@ -8,6 +9,8 @@ import './index.scss'
  * @param {array} billList 单日账单列表
  */
 export default function DayBill({date,billList}) {
+
+    console.log(billTypeToName)
 
     const dayResult = useMemo(()=>{
         //支出 收入 结余
@@ -21,9 +24,9 @@ export default function DayBill({date,billList}) {
             <div className="header">
                 <div className="dateIcon"> 
                     <span>{date}</span>
+                    <span className={classNames('arrow')}></span>
                 </div>
-            </div>
-            <div className="oneLineOverview"> 
+                <div className="oneLineOverview"> 
                     <div className="pay">
                         <span className="type">支出</span>
                         <span className="money">{dayResult.pay.toFixed(2)}</span>
@@ -37,6 +40,23 @@ export default function DayBill({date,billList}) {
                         <span className="type">结余</span>
                     </div>
                 </div>
+            </div>
+            {/* 单日列表 */}
+            <div className="billList"> 
+                {
+                    billList.map((item, index) => { 
+                        return (
+                            <div className="bill" key={item.id}>
+                                <div className="detail"> 
+                                    <div className="billType">{billTypeToName?.[item.type]?.[item.useFor]}</div>
+                                </div>
+                                <div className="money">{item.money.toFixed(2)}</div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+            
         </div>
     )
 }

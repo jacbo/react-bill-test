@@ -18,7 +18,8 @@ export default function Month() {
     },[billList])
 
     const dateGroup = useMemo(()=>{
-        return _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM-DD'))
+        const dates = _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM-DD'));
+        return {dates,keys:Object.keys(dates)}
     },[billList])
 
     const [dateVisible, setDateVisible] = useState(false)
@@ -84,11 +85,10 @@ export default function Month() {
                 {/* 单日列表 */}
 
                 {
-                    monthList?.length > 0 && monthList.map((item, index) => { 
-                        const date = dayjs(item.date).format('YYYY-MM-DD')
-                        const dateTxt = dayjs(item.date).format('M月D日')
+                    dateGroup.keys?.length > 0 && dateGroup.keys.map((date) => { 
+                        const dateTxt = dayjs(date,'YYYY-MM-DD').format('M月D日')
                         return (
-                            <DailyBill key={date} date={dateTxt} billList={dateGroup[date]} />
+                            <DailyBill key={date} date={dateTxt} billList={dateGroup.dates[date]} />
                         )
                     })
                 }
