@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import './index.scss'
 import { billTypeToName} from '@/constants'
 import { useState } from 'react';
+import Icon from '@/components/Icon';
 
 /**
  * 单日账单组件
@@ -48,6 +49,7 @@ export default function DayBill({date,billList}) {
                     billList.map((item, index) => { 
                         return (
                             <div className="bill" key={item.id}>
+                                <Icon type={item.useFor}/>
                                 <div className="detail"> 
                                     <div className="billType">{billTypeToName?.[item.type]?.[item.useFor]}</div>
                                 </div>

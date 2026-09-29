@@ -17,8 +17,8 @@ export const billListData = {
             ]
         },
         {
-            type:'other',
-            name:'其他支出',
+            type:'drinks',
+            name:'酒水',
             list:[
                 {type:'community',name:'社区缴费'}
             ]
