@@ -17,16 +17,16 @@ export default function Month() {
         return _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM'))
     },[billList])
 
-    const dateGroup = useMemo(()=>{
-        const dates = _.groupBy(billList,(item)=>dayjs(item.date).format('YYYY-MM-DD'));
-        return {dates,keys:Object.keys(dates)}
-    },[billList])
-
     const [dateVisible, setDateVisible] = useState(false)
 
     const [currentDate, setCurrentDate] = useState(()=> new Date())
 
     const [monthList, setMonthList] = useState([])
+
+    const dateGroup = useMemo(()=>{
+        const dates = _.groupBy(monthList,(item)=>dayjs(item.date).format('YYYY-MM-DD'));
+        return {dates,keys:Object.keys(dates)}
+    },[monthList])
 
     const monthResult = useMemo(()=>{
         console.log('monthList', monthList)

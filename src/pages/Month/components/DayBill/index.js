@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { useMemo } from 'react';
 import './index.scss'
 import { billTypeToName} from '@/constants'
+import { useState } from 'react';
 
 /**
  * 单日账单组件
@@ -10,8 +11,6 @@ import { billTypeToName} from '@/constants'
  */
 export default function DayBill({date,billList}) {
 
-    console.log(billTypeToName)
-
     const dayResult = useMemo(()=>{
         //支出 收入 结余
         const pay = billList.filter(item=>item.type === 'pay').reduce((pre,cur)=>pre+cur.money,0)
@@ -19,12 +18,14 @@ export default function DayBill({date,billList}) {
         return {pay,income,total:pay+income}
     },[billList])
 
+    const [visible,setVisible] = useState(false)
+
     return (
-        <div className={classNames('dailyBill')}>
+        <div className={classNames('dailyBill')} onClick={()=>setVisible(!visible)}>
             <div className="header">
                 <div className="dateIcon"> 
                     <span>{date}</span>
-                    <span className={classNames('arrow')}></span>
+                    <span className={classNames('arrow',visible&&'expand')} ></span>
                 </div>
                 <div className="oneLineOverview"> 
                     <div className="pay">
@@ -42,7 +43,7 @@ export default function DayBill({date,billList}) {
                 </div>
             </div>
             {/* 单日列表 */}
-            <div className="billList"> 
+            <div className="billList" style={{display:visible?'block':'none'}}> 
                 {
                     billList.map((item, index) => { 
                         return (
